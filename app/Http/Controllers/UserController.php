@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\User;
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class UserController extends Controller
+{
+    public function members(){
+        $users = User::all();
+        return view('members')->with("users", $users);
+    }
+
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            "image" => "image|max:2000|mimes:jpeg,png,jpg",
+        ]);
+        $inputs = $request->all();
+        if ($request->file("image")) {
+            $file = $request->file("image");
+            $nameWithExt = $file->getClientOriginalName();
+            $name = pathinfo($nameWithExt, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $saveName = $name . "_" . time() . "." . $extension;
+            $file->move("profiles", $saveName);
+            $inputs["image"] = $saveName;
+
+            try {
+                if(Auth::user()->image !== "default.jpg"){
+                    File::delete('profiles/' . Auth::user()->image);
+                }
+                User::where("id", "=", Auth::user()->id)->update([
+                    "name" => $inputs["name"],
+                    "email" => $inputs["email"],
+                    "password" => Hash::make($inputs["password"]),
+                    "image" => $saveName
+                ]);
+                return response()->json(["msg" => "Saved Successfully"]);
+            } catch (QueryException $th) {
+                throw $th;
+            }
+        } else {
+            try {
+                User::where("id", "=", Auth::user()->id)->update([
+                    "name" => $inputs["name"],
+                    "email" => $inputs["email"],
+                    "password" => Hash::make($inputs["password"])
+                ]);
+                return response()->json(["msg" => "Saved Successfully"]);
+            } catch (QueryException $th) {
+                throw $th;
+            }
+        }
+    }
+
+    public function status($id, $request){
+        return $request;
+        $inputs=$request->all();
+        try {
+                User::where("id", "=", $id)->update([
+                    "status" => $inputs["action"]
+                ]);
+                return response()->json(["msg" => "Request Was Successfully"]);
+            } catch (QueryException $th) {
+                throw $th;
+            }
+    }
+}

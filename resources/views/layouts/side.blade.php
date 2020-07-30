@@ -4,7 +4,7 @@
             <ul id="sidebarnav">
                 <li>
                     <div class="user-profile d-flex no-block dropdown m-t-20">
-                        <div class="user-pic"><img src="{{ asset('assets/images/users/agent.jpg')}}" alt="users" class="rounded-circle" width="40" /></div>
+                        <div class="user-pic"><img src={{ asset('profiles/'.Auth()->user()->image)}} alt="users" class="rounded-circle" width="40" /></div>
                         <div class="user-content hide-menu m-l-10 ml-2">
                             <a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <h5 class="m-b-0 user-name font-medium">{{Auth()->user()->name}} <i class="fa fa-angle-down"></i></h5>

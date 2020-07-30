@@ -29,10 +29,9 @@ Route::get('/profile', function () {
     return view('auth.profile');
 })->name('profile');
 
-Route::get('/members', function () {
-    return view('members');
-})->name('members');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post("/edit/profile", "UserController@edit")->name("editUser");
+Route::get("/members", "UserController@members")->name("members");
+Route::post("/status/actions/{id}", "UserController@status")->name("status");

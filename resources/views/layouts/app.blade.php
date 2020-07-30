@@ -84,6 +84,7 @@
                     format: 'yyyy'
             });
 
+<<<<<<< HEAD
         $('.top-right').notify({
             message: { text: "Hello its working" }
         }).show();
@@ -122,6 +123,11 @@
             clearInputs();
         });
     });
+=======
+        // $('.top-right').notify({
+        //     message: { text: "Hello its working" }
+        // }).show();
+>>>>>>> master
         
         });
     </script>

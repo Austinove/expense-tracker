@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form>
+      <form id="expense-form">
           @csrf
         <div class="modal-body">
             <div class="form-group">
@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
-            <button type="submit" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
+            <button type="submit" id="request-btn" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
         </div>
       </form>
     </div>

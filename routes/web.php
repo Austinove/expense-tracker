@@ -34,4 +34,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post("/edit/profile", "UserController@edit")->name("editUser");
 Route::get("/members", "UserController@members")->name("members");
-Route::post("/status/actions/{id}", "UserController@status")->name("status");
+Route::post("/status/actions", "UserController@status")->name("status");

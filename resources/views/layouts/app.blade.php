@@ -77,26 +77,26 @@
     <script type="text/javascript">
         // When the document is ready
         $(document).ready(function () {
-                function postActions(actionUrl, sendData) {
-                    return $.ajax({
-                        url: actionUrl,
-                        type: "post",
-                        data: JSON.stringify(sendData),
-                        dataType: 'json',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        contentType: "application/json",
-                        cache: false,
-                        processData: false,
-                    });
-                }
+            function postActions(actionUrl, sendData) {
+                return $.ajax({
+                    url: actionUrl,
+                    type: "post",
+                    data: JSON.stringify(sendData),
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    contentType: "application/json",
+                    cache: false,
+                    processData: false,
+                });
+            }
             $(document).on("click", ".action", function(e) {
-                var initialUrl = `status/actions/${$(this).attr('data-id')}`
-                var action = new FormData();
-                $(this).attr('btn-action') === "activate" ? action.append("action", "Activated") : action.append("action", "Deactivated");
+                var initialUrl = "status/actions"
+                var action;
+                $(this).attr('btn-action') === "activate" ? (action = { "id": $(this).attr('data-id'), "action": "Activated" }) : (action ={ "id": $(this).attr('data-id'), "action": "Deactivated" });
                 $.when(postActions(initialUrl, action).done(response => {
-                    console.log(response)
+                    location.reload();
                 }).fail(error => {
                     console.log(error)
                 }))
@@ -134,6 +134,35 @@
                 $('#profile-btn').html('Update Profile');
                 $("#profile-btn").prop('disabled', false);
                 location.reload();
+            })
+            .fail(error => {
+                console.log(error);
+            });
+        });
+
+        $('#expense-form').submit(function (e) {
+            e.preventDefault();
+            var actionUrl = "expense";
+            $('#request-btn').html('Submiting...');
+            $("#request-btn").prop('disabled', true);
+            $.ajax({
+                url: actionUrl,
+                type: "post",
+                data: new FormData(this),
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                cache: false,
+                processData: false,
+            })
+            .done(response => {
+                console.log(response);
+                $('#request-btn').html('Request');
+                Modal.close();
+                $("#request-btn").prop('disabled', false);
+                // location.reload();
             })
             .fail(error => {
                 console.log(error);

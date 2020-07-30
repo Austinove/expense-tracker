@@ -62,11 +62,11 @@ class UserController extends Controller
         }
     }
 
-    public function status($id, $request){
-        return $request;
+    public function status(Request $request){
+        
         $inputs=$request->all();
         try {
-                User::where("id", "=", $id)->update([
+                User::where("id", "=", $inputs['id'])->update([
                     "status" => $inputs["action"]
                 ]);
                 return response()->json(["msg" => "Request Was Successfully"]);

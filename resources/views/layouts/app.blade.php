@@ -84,9 +84,9 @@
                     format: 'yyyy'
             });
 
-        $('.top-right').notify({
-            message: { text: "Hello its working" }
-        }).show();
+        // $('.top-right').notify({
+        //     message: { text: "Hello its working" }
+        // }).show();
         
         });
     </script>

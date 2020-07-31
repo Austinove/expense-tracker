@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index(){
+        return view('auth.profile');
+    }
+
     public function members(){
         $users = User::all();
         return view('members')->with("users", $users);

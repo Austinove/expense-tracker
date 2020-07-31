@@ -21,17 +21,15 @@ Route::get('/dashboard', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/all/expenses', function () {
-    return view('expenses.index');
-})->name('allExpenses');
-
-Route::get('/profile', function () {
-    return view('auth.profile');
-})->name('profile');
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get("/home", "HomeController@index")->name("home");
+Route::get("/profile", "UserController@index")->name('profile');
 Route::post("/edit/profile", "UserController@edit")->name("editUser");
 Route::get("/members", "UserController@members")->name("members");
 Route::post("/status/actions", "UserController@status")->name("status");
+
+Route::get("/all/expenses", "ExpensesController@allExpenses")->name("allExpenses");
+Route::get("/dashboard", "ExpensesController@index")->name("welcome");
+Route::post("/expense", "ExpensesController@create")->name("createExpense");
+Route::get("/expenses/fetch", "ExpensesController@fetch")->name("fetchExpenses");

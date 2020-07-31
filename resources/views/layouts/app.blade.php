@@ -77,7 +77,17 @@
     <script type="text/javascript">
         // When the document is ready
         $(document).ready(function () {
-            function postActions(actionUrl, sendData) {
+            //Get function request
+            const getRequest = url => {
+                return $.ajax({
+                    url:url,
+                    type: "get",
+                    dataType: "json"
+                });
+            };
+
+            //post function request
+            const postActions = (actionUrl, sendData) => {
                 return $.ajax({
                     url: actionUrl,
                     type: "post",
@@ -108,9 +118,9 @@
                     format: 'yyyy'
             });
             
-        $('.top-right').notify({
-            message: { text: "Hello its working" }
-        }).show();
+        // $('.top-right').notify({
+        //     message: { text: "Hello its working" }
+        // }).show();
 
         $('#profile-form').submit(function (e) {
             e.preventDefault();
@@ -159,15 +169,71 @@
             })
             .done(response => {
                 console.log(response);
-                $('#request-btn').html('Request');
-                Modal.close();
+                $(expenses).modal("hide");
+                $('#request-btn').html('<i class="mdi mdi-check"></i> Request');
                 $("#request-btn").prop('disabled', false);
-                // location.reload();
             })
             .fail(error => {
                 console.log(error);
             });
         });
+        
+        const fetchExpenses = () => {
+            $.when(getRequest("expenses/fetch").done(response => {
+                console.log(response);
+                renderExpenses(response)
+            }).fail(error => {
+                console.log(error);
+            }))
+        }
+        fetchExpenses();
+        const renderExpenses = expensesData => {
+            $("expenses-tbody").html("");
+            expensesData.forEach(expense => {
+                var spanClass;
+                switch (expense.status) 
+                {
+                    case 'pending':
+                        spanClass = "label label-rounded label-primary"
+                        break;
+                    case 'approved':
+                        spanClass = "label label-rounded label-success"
+                        break;
+                    case 'rejected':
+                        spanClass = "label label-rounded label-danger" 
+                        break; 
+                    case 'recommended':
+                        spanClass = "label label-rounded label-warning" 
+                        break;                                   
+                    default:
+                        break;
+                }
+                return $("expenses-tbody").append(`
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="">
+                                            <h4 class="m-b-0 font-14">${expense.desc}</h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${expense.name}</span></td>
+                                <td><span class="font-14">${expense.created_at}</span></td>
+                                <td><span class=${spanClass}>${expense.status}</span></td>
+                                <td>
+                                    <span class="action-icons">
+                                        <a href="javascript:void(0)" id-data="${expense.id}" budget-data="${expense.budget}" desc-data="${expense.desc}"><i class="ti-pencil-alt"></i></a> | 
+                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="ti-check color-success"></i></a> | 
+                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="ti-heart"></i></a> |  
+                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="fa fa-trash color-danger" aria-hidden="true"></i></a> | 
+                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="mdi mdi-block-helper color-warning"></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                        `)
+            });
+        }
     });
     </script>
     <!--Wave Effects -->

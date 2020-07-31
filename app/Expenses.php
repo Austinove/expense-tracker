@@ -11,4 +11,8 @@ class Expenses extends Model
         'budget',
         'status'
     ];
+
+    public function user() {
+        return $this->belongsTo("App\User");
+    }
 }

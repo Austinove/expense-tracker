@@ -51,7 +51,7 @@
                                         <th class="border-top-0">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="expenses-tbody">
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -67,10 +67,10 @@
                                         <td>
                                             <span class="action-icons">
                                                 <a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-check"></i></a> | 
+                                                <a href="javascript:void(0)"><i class="ti-check color-success"></i></a> | 
                                                 <a href="javascript:void(0)"><i class="ti-heart"></i></a> |  
-                                                <a href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="mdi mdi-block-helper"></i></a>
+                                                <a href="javascript:void(0)"><i class="fa fa-trash color-dange" aria-hidden="true"></i></a> | 
+                                                <a href="javascript:void(0)"><i class="mdi mdi-block-helper color-warning"></i></a>
                                             </span>
                                         </td>
                                     </tr>

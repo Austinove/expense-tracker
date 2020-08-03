@@ -76,7 +76,13 @@
     <script src="{{asset('vendor/bootstrap-notify/bootstrap-notify.min.js')}}"></script>
     <script type="text/javascript">
         // When the document is ready
-        $(document).ready(function () {
+        $(document).ready(() => {
+            //Empty inputs
+            const emptyInputs = () => {
+                $("#desc").val("");
+                $("#budget").val("");
+            }
+
             //Get function request
             const getRequest = url => {
                 return $.ajax({
@@ -101,7 +107,26 @@
                     processData: false,
                 });
             }
-            $(document).on("click", ".action", function(e) {
+
+            //closing modal
+            $(document).on("click", ".modal-close", e => {
+                emptyInputs();
+                $("#request-btn").attr("btn-action", "save").html('<i class="mdi mdi-check"></i> Request');
+            })
+
+            //setting up month inputs
+            const setMonth = () => {
+                var d = new Date();
+                var currentMonth;
+                (d.getMonth() + 1) >= 10 ? 
+                currentMonth = (d.getMonth() + 1) :
+                currentMonth = "0" + (d.getMonth() + 1);
+                $("#month").val(d.getFullYear() + "-" + currentMonth);
+            }
+            setMonth();
+
+            //User activation and Deactivation actions
+            $(document).on("click", ".action", function() {
                 var initialUrl = "status/actions"
                 var action;
                 $(this).attr('btn-action') === "activate" ? (action = { "id": $(this).attr('data-id'), "action": "Activated" }) : (action ={ "id": $(this).attr('data-id'), "action": "Deactivated" });
@@ -122,7 +147,7 @@
         //     message: { text: "Hello its working" }
         // }).show();
 
-        $('#profile-form').submit(function (e) {
+        $('#profile-form').submit(function(e) {
             e.preventDefault();
             var actionUrl = "edit/profile";
             $('#profile-btn').html('Submiting...');
@@ -150,9 +175,12 @@
             });
         });
 
-        $('#expense-form').submit(function (e) {
+        $('#expense-form').submit(function(e) {
             e.preventDefault();
             var actionUrl = "expense";
+            if($("#request-btn").attr("btn-action") !== "save"){
+                actionUrl="expenses/edit";
+            }
             $('#request-btn').html('Submiting...');
             $("#request-btn").prop('disabled', true);
             $.ajax({
@@ -168,7 +196,7 @@
                 processData: false,
             })
             .done(response => {
-                console.log(response);
+                fetchExpenses();
                 $(expenses).modal("hide");
                 $('#request-btn').html('<i class="mdi mdi-check"></i> Request');
                 $("#request-btn").prop('disabled', false);
@@ -179,16 +207,18 @@
         });
         
         const fetchExpenses = () => {
-            $.when(getRequest("expenses/fetch").done(response => {
-                console.log(response);
-                renderExpenses(response)
+            var month = $("#month").val().split("-")[1];
+            var monthData = {"month": ("-" + month + "-")}
+            $.when(postActions("expenses/fetch", monthData).done(response => {
+                renderExpenses(response);
             }).fail(error => {
                 console.log(error);
             }))
         }
         fetchExpenses();
+        
         const renderExpenses = expensesData => {
-            $("expenses-tbody").html("");
+            $(".expenses-tbody").html("");
             expensesData.forEach(expense => {
                 var spanClass;
                 switch (expense.status) 
@@ -208,7 +238,7 @@
                     default:
                         break;
                 }
-                return $("expenses-tbody").append(`
+                return $(".expenses-tbody").append(`
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -220,20 +250,35 @@
                                 <td><span class="font-14">${expense.budget}</span></td>
                                 <td><span class="font-14">${expense.name}</span></td>
                                 <td><span class="font-14">${expense.created_at}</span></td>
-                                <td><span class=${spanClass}>${expense.status}</span></td>
+                                <td><span class="${spanClass}">${expense.status}</span></td>
                                 <td>
                                     <span class="action-icons">
-                                        <a href="javascript:void(0)" id-data="${expense.id}" budget-data="${expense.budget}" desc-data="${expense.desc}"><i class="ti-pencil-alt"></i></a> | 
-                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="ti-check color-success"></i></a> | 
-                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="ti-heart"></i></a> |  
-                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="fa fa-trash color-danger" aria-hidden="true"></i></a> | 
-                                        <a href="javascript:void(0)" id-data="${expense.id}"><i class="mdi mdi-block-helper color-warning"></i></a>
+                                        ${(expense.status === 'pending') ? '<a href="#" class="edit-icon" disabled id-data="'+expense.id+'" budget-data="'+expense.budget+'" desc-data="'+expense.desc+'"><i class="ti-pencil-alt"></i></a> | ': 'No Actions'}
+                                        ${(expense.userType === 'treasurer')&&(expense.status === 'recommended') ? '<a href="#" class="approve-icon" id-data="'+expense.id+'"><i class="ti-check color-success"></i></a> | ': ' '}
+                                        ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a> |  ': ' '}
+                                        ${(expense.status === 'pending') ? '<a href="#" class="delete-icon" id-data="'+expense.id+'"><i class="fa fa-trash color-danger" aria-hidden="true"></i></a> | ': ' '}
+                                        ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="decline-icon" id-data="'+expense.id+'"><i class="mdi mdi-block-helper"></i></a>': ' '}
                                     </span>
                                 </td>
                             </tr>
                         `)
             });
         }
+        $(document).on("click", ".edit-icon", function(e) {
+            e.preventDefault();
+            $("#budget").val($(this).attr("budget-data"));
+            $("#desc").val($(this).attr("desc-data"));
+            $("#request-btn").attr("btn-action", "edit").html('<i class="fa fa-save"></i> Save Changes');
+            $("#expenses").modal("show");
+        });
+
+        $(document).on("click", ".delete-icon", function(e) {
+            e.preventDefault();
+            $("#budget").val($(this).attr("id-data"));
+            $("#desc").val($(this).attr("desc-data"));
+            $("#request-btn").attr("btn-action", "edit").html('<i class="fa fa-save"></i> Save Changes');
+            $("#expenses").modal("show");
+        });
     });
     </script>
     <!--Wave Effects -->

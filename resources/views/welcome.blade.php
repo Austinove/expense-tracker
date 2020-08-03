@@ -51,74 +51,8 @@
                                         <th class="border-top-0">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="expenses-tbody">
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="">
-                                                    <h4 class="m-b-0 font-14">Disclosure: This page contains external affiliate links that may result in us receiving a commission if.</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span class="font-14">2000000</span></td>
-                                        <td><span class="font-14">John Deo</span></td>
-                                        <td><span class="font-14">7/29/2020 </span></td>
-                                        <td><span class="label label-rounded label-primary">Pending</span></td>
-                                        <td>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-check color-success"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-heart"></i></a> |  
-                                                <a href="javascript:void(0)"><i class="fa fa-trash color-dange" aria-hidden="true"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="mdi mdi-block-helper color-warning"></i></a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="">
-                                                    <h4 class="m-b-0 font-14">Disclosure: This page contains external affiliate links that may result in us receiving a commission if.</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span class="font-14">2000000</span></td>
-                                        <td><span class="font-14">John Deo</span></td>
-                                        <td><span class="font-14">7/29/2020 </span></td>
-                                        <td><span class="label label-success label-rounded">Approved</span></td>
-                                        <td>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-check"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-heart"></i></a> |  
-                                                <a href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="mdi mdi-block-helper"></i></a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="">
-                                                    <h4 class="m-b-0 font-14">Disclosure: This page contains external affiliate links that may result in us receiving a commission if.</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span class="font-14">2000000</span></td>
-                                        <td><span class="font-14">John Deo</span></td>
-                                        <td><span class="font-14">7/29/2020 </span></td>
-                                        <td><span class="label label-danger label-rounded">Rejected</span></td>
-                                        <td>
-                                            <span class="action-icons">
-                                                <a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-check"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="ti-heart"></i></a> |  
-                                                <a href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i></a> | 
-                                                <a href="javascript:void(0)"><i class="mdi mdi-block-helper"></i></a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                {{-- data from jQuery --}}
+                                <tbody class="expenses-tbody"></tbody>
                             </table>
                         </div>
                     </div>

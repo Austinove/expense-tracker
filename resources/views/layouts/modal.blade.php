@@ -16,12 +16,12 @@
             </div>
             <div class="form-group">
                 <label for="desc">Reason/Description <span class="text-danger">*</span></label>
-                <textarea name="desc" class="form-control form-control-sm" required maxlength="250" placeholder="Reason why your requesting" id="desc" rows="3"></textarea>
+                <textarea id="desc" name="desc" class="form-control form-control-sm" required maxlength="250" placeholder="Reason why your requesting" id="desc" rows="3"></textarea>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
-            <button type="submit" id="request-btn" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
+            <button type="button" class="btn btn-outline-danger btn-sm modal-close" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
+            <button type="submit" btn-action="save" id="request-btn" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
         </div>
       </form>
     </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm modal-close" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
             <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
         </div>
       </form>

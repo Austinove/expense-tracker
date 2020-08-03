@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-danger btn-sm modal-close" data-dismiss="modal"><i class="mdi mdi-close-circle"></i> Close</button>
-            <button type="submit" btn-action="save" id="request-btn" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
+            <button type="submit" btn-id="" btn-action="save" id="request-btn" class="btn btn-outline-primary btn-sm"><i class="mdi mdi-check"></i> Request</button>
         </div>
       </form>
     </div>

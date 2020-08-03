@@ -165,7 +165,6 @@
                 processData: false,
             })
             .done(response => {
-                console.log(response);
                 $('#profile-btn').html('Update Profile');
                 $("#profile-btn").prop('disabled', false);
                 location.reload();
@@ -179,7 +178,7 @@
             e.preventDefault();
             var actionUrl = "expense";
             if($("#request-btn").attr("btn-action") !== "save"){
-                actionUrl="expenses/edit";
+                actionUrl=`expenses/edit/${$("#request-btn").attr("btn-id")}`;
             }
             $('#request-btn').html('Submiting...');
             $("#request-btn").prop('disabled', true);
@@ -198,7 +197,8 @@
             .done(response => {
                 fetchExpenses();
                 $(expenses).modal("hide");
-                $('#request-btn').html('<i class="mdi mdi-check"></i> Request');
+                emptyInputs();
+                $('#request-btn').html('<i class="mdi mdi-check"></i> Request').attr("btn-action", "save");
                 $("#request-btn").prop('disabled', false);
             })
             .fail(error => {
@@ -229,10 +229,10 @@
                     case 'approved':
                         spanClass = "label label-rounded label-success"
                         break;
-                    case 'rejected':
+                    case 'declined':
                         spanClass = "label label-rounded label-danger" 
                         break; 
-                    case 'recommended':
+                    case 'recommend':
                         spanClass = "label label-rounded label-warning" 
                         break;                                   
                     default:
@@ -253,8 +253,8 @@
                                 <td><span class="${spanClass}">${expense.status}</span></td>
                                 <td>
                                     <span class="action-icons">
-                                        ${(expense.status === 'pending') ? '<a href="#" class="edit-icon" disabled id-data="'+expense.id+'" budget-data="'+expense.budget+'" desc-data="'+expense.desc+'"><i class="ti-pencil-alt"></i></a> | ': 'No Actions'}
-                                        ${(expense.userType === 'treasurer')&&(expense.status === 'recommended') ? '<a href="#" class="approve-icon" id-data="'+expense.id+'"><i class="ti-check color-success"></i></a> | ': ' '}
+                                        ${(expense.status === 'pending') ? '<a href="#" class="edit-icon" disabled id-data="'+expense.id+'" budget-data="'+expense.budget+'" desc-data="'+expense.desc+'"><i class="ti-pencil-alt"></i></a> | ': '__|'}
+                                        ${(expense.userType === 'treasurer')&&(expense.status === 'recommend') ? '<a href="#" class="approve-icon" id-data="'+expense.id+'"><i class="ti-check color-success"></i></a> | ': ' '}
                                         ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a> |  ': ' '}
                                         ${(expense.status === 'pending') ? '<a href="#" class="delete-icon" id-data="'+expense.id+'"><i class="fa fa-trash color-danger" aria-hidden="true"></i></a> | ': ' '}
                                         ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="decline-icon" id-data="'+expense.id+'"><i class="mdi mdi-block-helper"></i></a>': ' '}
@@ -268,16 +268,55 @@
             e.preventDefault();
             $("#budget").val($(this).attr("budget-data"));
             $("#desc").val($(this).attr("desc-data"));
-            $("#request-btn").attr("btn-action", "edit").html('<i class="fa fa-save"></i> Save Changes');
+            $("#request-btn").attr("btn-action", "edit").html('<i class="fa fa-save"></i> Save Changes').attr("btn-id", $(this).attr('id-data'));
             $("#expenses").modal("show");
         });
 
         $(document).on("click", ".delete-icon", function(e) {
             e.preventDefault();
-            $("#budget").val($(this).attr("id-data"));
-            $("#desc").val($(this).attr("desc-data"));
-            $("#request-btn").attr("btn-action", "edit").html('<i class="fa fa-save"></i> Save Changes');
-            $("#expenses").modal("show");
+            var deleteExp = {"id": $(this).attr("id-data")}
+            $.when(postActions("/expenses/delete", deleteExp).done(response => {
+                fetchExpenses();
+            }).fail(error => {
+                console.log(error);
+            }));
+        });
+
+        $(document).on("click", ".recommend-icon", function(e) {
+            e.preventDefault();
+            var recomExp = {
+                "id": $(this).attr("id-data"),
+                "action": "recommend"
+                }
+            $.when(postActions("/expenses/actions", recomExp).done(response => {
+                fetchExpenses();
+            }).fail(error => {
+                console.log(error);
+            }))
+        });
+        $(document).on("click", ".decline-icon", function(e) {
+            e.preventDefault();
+            var declineExp = {
+                "id": $(this).attr("id-data"),
+                "action": "declined"
+                }
+            $.when(postActions("/expenses/actions", declineExp).done(response => {
+                fetchExpenses();
+            }).fail(error => {
+                console.log(error);
+            }))
+        });
+        $(document).on("click", ".approve-icon", function(e) {
+            e.preventDefault();
+            var acceptExp = {
+                "id": $(this).attr("id-data"),
+                "action": "approved"
+                }
+            $.when(postActions("/expenses/actions", acceptExp).done(response => {
+                fetchExpenses();
+            }).fail(error => {
+                console.log(error);
+            }))
         });
     });
     </script>

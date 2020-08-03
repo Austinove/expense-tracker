@@ -33,4 +33,6 @@ Route::get("/all/expenses", "ExpensesController@allExpenses")->name("allExpenses
 Route::get("/dashboard", "ExpensesController@index")->name("welcome");
 Route::post("/expense", "ExpensesController@create")->name("createExpense");
 Route::post("/expenses/fetch", "ExpensesController@fetch")->name("fetchExpenses");
-Route::post("/expenses/edit", "ExpensesController@edit")->name("editExpenses");
+Route::post("/expenses/edit/{id}", "ExpensesController@edit")->name("editExpenses");
+Route::post("expenses/delete", "ExpensesController@destroy")->name("deleteExpense");
+Route::post("expenses/actions", "ExpensesController@action")->name("expenseAction");

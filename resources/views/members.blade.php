@@ -25,16 +25,18 @@
                             <h6>{{$user->name}}</h6>
                             <small class="text-muted p-t-30 db">Actions to User</small>
                             <br class="mt-1 mb-2"/>
-                            @if ($user->status==='Deactivated')
-                                <div>
-                                    <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate" disabled><i class="mdi mdi-close-circle"></i>Deactivate</button>
-                                    <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate"><i class="mdi mdi-check"></i>Activate</button>
-                                </div>
-                            @else
-                                <div>
-                                    <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate"><i class="mdi mdi-close-circle"></i>Deactivate</button>
-                                    <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate" disabled><i class="mdi mdi-check"></i>Activate</button>
-                                </div>
+                            @if (Auth()->user()->userType==="chairman")
+                                @if ($user->status==='Deactivated')
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate" disabled><i class="mdi mdi-close-circle"></i>Deactivate</button>
+                                        <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate"><i class="mdi mdi-check"></i>Activate</button>
+                                    </div>
+                                @else
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate"><i class="mdi mdi-close-circle"></i>Deactivate</button>
+                                        <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate" disabled><i class="mdi mdi-check"></i>Activate</button>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     </div>

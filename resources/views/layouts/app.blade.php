@@ -253,11 +253,8 @@
                                 <td><span class="${spanClass}">${expense.status}</span></td>
                                 <td>
                                     <span class="action-icons">
-                                        ${(expense.status === 'pending') ? '<a href="#" class="edit-icon" disabled id-data="'+expense.id+'" budget-data="'+expense.budget+'" desc-data="'+expense.desc+'"><i class="ti-pencil-alt"></i></a> | ': '__|'}
-                                        ${(expense.userType === 'treasurer')&&(expense.status === 'recommend') ? '<a href="#" class="approve-icon" id-data="'+expense.id+'"><i class="ti-check color-success"></i></a> | ': ' '}
-                                        ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a> |  ': ' '}
+                                        ${(expense.status === 'pending') ? '<a href="#" class="edit-icon" disabled id-data="'+expense.id+'" budget-data="'+expense.budget+'" desc-data="'+expense.desc+'"><i class="ti-pencil-alt"></i></a> | ': '__'}
                                         ${(expense.status === 'pending') ? '<a href="#" class="delete-icon" id-data="'+expense.id+'"><i class="fa fa-trash color-danger" aria-hidden="true"></i></a> | ': ' '}
-                                        ${(expense.userType === 'chairman')&&(expense.status === 'pending') ? '<a href="#" class="decline-icon" id-data="'+expense.id+'"><i class="mdi mdi-block-helper"></i></a>': ' '}
                                     </span>
                                 </td>
                             </tr>
@@ -322,7 +319,7 @@
         const fetchPendingExp = () => {
             var month = $("#month").val().split("-")[1];
             var monthData = {"month": ("-" + month + "-")}
-            $.when(postActions("expenses/fetchPending", monthData).done(response => {
+            $.when(postActions("fetch/pending", monthData).done(response => {
                 renderPendingExp(response);
             }).fail(error => {
                 console.log(error);
@@ -347,8 +344,8 @@
                                 <td><span class="label label-rounded label-primary">${expense.status}</span></td>
                                 <td>
                                     <span class="action-icons">
-                                        <a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a> |  
-                                        <a href="#" class="decline-icon" id-data="'+expense.id+'"><i class="mdi mdi-block-helper"></i></a>
+                                        <a href="#" class="recommend-icon" id-data="${expense.id}"><i class="ti-heart"></i></a> |  
+                                        <a href="#" class="decline-icon" id-data="${expense.id}"><i class="mdi mdi-block-helper"></i></a>
                                     </span>
                                 </td>
                             </tr>
@@ -359,7 +356,7 @@
         const fetchRecoExp = () => {
             var month = $("#month").val().split("-")[1];
             var monthData = {"month": ("-" + month + "-")}
-            $.when(postActions("expenses/fetchReco", monthData).done(response => {
+            $.when(postActions("fetchReco", monthData).done(response => {
                 renderRecoExp(response);
             }).fail(error => {
                 console.log(error);
@@ -384,7 +381,7 @@
                                 <td><span class="label label-rounded label-warning">${expense.status}</span></td>
                                 <td>
                                     <span class="action-icons">
-                                        <a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a>
+                                        <a href="#" class="approve-icon" id-data="${expense.id}"><i class="ti-check color-success"></i></a>
                                     </span>
                                 </td>
                             </tr>

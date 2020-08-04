@@ -1,4 +1,4 @@
-<aside class="left-sidebar" style="position: fixed" data-sidebarbg="skin6">
+<aside class="left-sidebar" style="position: fixed; overflow-y: auto;" data-sidebarbg="skin6">
     <div class="scroll-sidebar">
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
@@ -14,7 +14,7 @@
                                 <a class="dropdown-item" href="{{route('profile')}}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" 
+                                <a class="dropdown-item"
                                     href="{{route('logout')}}" 
                                     onclick="event.preventDefault(); 
                                     document.getElementById('logout-form').submit();">
@@ -28,9 +28,15 @@
                     </div>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('welcome')}}" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('allExpenses')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">All Expenses</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('pending')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Pending</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('recommended')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Recommended</span></a></li>
+                @if ((Auth()->user()->userType==="chairman")||(Auth()->user()->userType==="treasurer"))
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('allExpenses')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">All Expenses</span></a></li>
+                @endif
+                @if (Auth()->user()->userType==="chairman")
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('pending')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Pending</span></a></li>
+                @endif
+                @if (Auth()->user()->userType==="treasurer")
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('recommended')}}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Recommended</span></a></li>
+                @endif
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('profile')}}" aria-expanded="false"><i class="mdi mdi-account-network"></i><span class="hide-menu">Profile</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('members')}}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span class="hide-menu">Members</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Projects</span></a></li>

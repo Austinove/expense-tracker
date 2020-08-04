@@ -32,30 +32,30 @@ class ExpensesController extends Controller
         return view("expenses.pending");
     }
 
-    // public function fetchPending(Request $request)
-    // {
-    //     $inputs = $request->all();
-    //     try {
-    //         $expenses = DB::table("expenses")
-    //         ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
-    //         ->where("status", "=", "pending")
-    //             ->join("users", "expenses.user_id", "=", "users.id")
-    //             ->select(
-    //                 "expenses.id",
-    //                 "expenses.desc",
-    //                 "expenses.created_at",
-    //                 "expenses.budget",
-    //                 "expenses.status",
-    //                 "expenses.user_id",
-    //                 "users.name",
-    //                 "users.userType"
-    //             )
-    //             ->orderBy("created_at", "desc")->get();
-    //         return response()->json($expenses);
-    //     } catch (QueryException $th) {
-    //         throw $th;
-    //     }
-    // }
+    public function fetchPending(Request $request)
+    {
+        $inputs = $request->all();
+        try {
+            $expenses = DB::table("expenses")
+            ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
+            ->where("expenses.status", "=", "pending")
+                ->join("users", "expenses.user_id", "=", "users.id")
+                ->select(
+                    "expenses.id",
+                    "expenses.desc",
+                    "expenses.created_at",
+                    "expenses.budget",
+                    "expenses.status",
+                    "expenses.user_id",
+                    "users.name",
+                    "users.userType"
+                )
+                ->orderBy("created_at", "desc")->get();
+            return response()->json($expenses);
+        } catch (QueryException $th) {
+            throw $th;
+        }
+    }
 
     public function recommended()
     {
@@ -68,7 +68,7 @@ class ExpensesController extends Controller
         try {
             $expenses = DB::table("expenses")
             ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
-            ->where("status", "=", "recommend")
+            ->where("expenses.status", "=", "recommend")
             ->join("users", "expenses.user_id", "=", "users.id")
             ->select(
                 "expenses.id",

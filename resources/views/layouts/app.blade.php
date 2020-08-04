@@ -318,6 +318,79 @@
                 console.log(error);
             }))
         });
+        
+        const fetchPendingExp = () => {
+            var month = $("#month").val().split("-")[1];
+            var monthData = {"month": ("-" + month + "-")}
+            $.when(postActions("expenses/fetchPending", monthData).done(response => {
+                renderPendingExp(response);
+            }).fail(error => {
+                console.log(error);
+            }))
+        }
+        fetchPendingExp();
+        const renderPendingExp = expensesData => {
+            $(".pending-tbody").html("");
+            expensesData.forEach(expense => {
+                return $(".pending-tbody").append(`
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="">
+                                            <h4 class="m-b-0 font-14">${expense.desc}</h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${expense.name}</span></td>
+                                <td><span class="font-14">${expense.created_at}</span></td>
+                                <td><span class="label label-rounded label-primary">${expense.status}</span></td>
+                                <td>
+                                    <span class="action-icons">
+                                        <a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a> |  
+                                        <a href="#" class="decline-icon" id-data="'+expense.id+'"><i class="mdi mdi-block-helper"></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                        `)
+            });
+        }
+
+        const fetchRecoExp = () => {
+            var month = $("#month").val().split("-")[1];
+            var monthData = {"month": ("-" + month + "-")}
+            $.when(postActions("expenses/fetchReco", monthData).done(response => {
+                renderRecoExp(response);
+            }).fail(error => {
+                console.log(error);
+            }))
+        }
+        fetchRecoExp();
+        const renderRecoExp = expensesData => {
+            $(".recommend-tbody").html("");
+            expensesData.forEach(expense => {
+                return $(".recommend-tbody").append(`
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="">
+                                            <h4 class="m-b-0 font-14">${expense.desc}</h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${expense.name}</span></td>
+                                <td><span class="font-14">${expense.created_at}</span></td>
+                                <td><span class="label label-rounded label-warning">${expense.status}</span></td>
+                                <td>
+                                    <span class="action-icons">
+                                        <a href="#" class="recommend-icon" id-data="'+expense.id+'"><i class="ti-heart"></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                        `)
+            });
+        }
     });
     </script>
     <!--Wave Effects -->

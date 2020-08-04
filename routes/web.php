@@ -36,3 +36,7 @@ Route::post("/expenses/fetch", "ExpensesController@fetch")->name("fetchExpenses"
 Route::post("/expenses/edit/{id}", "ExpensesController@edit")->name("editExpenses");
 Route::post("expenses/delete", "ExpensesController@destroy")->name("deleteExpense");
 Route::post("expenses/actions", "ExpensesController@action")->name("expenseAction");
+Route::get("expenses/pending", "ExpensesController@pending")->name("pending")->middleware("chairman");
+Route::post("expenses/fetchPending", "ExpensesController@fetchPending")->name("fetchPending")->middleware("chairman");
+Route::get("expenses/recommended", "ExpensesController@recommended")->name("recommended")->middleware("treasurer");
+Route::post("expenses/fetchReco", "ExpensesController@fetchReco")->name("fetchRecommended")->middleware("treasurer");

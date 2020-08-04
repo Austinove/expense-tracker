@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class checkUser
+class checkUserTre
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,9 @@ class checkUser
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->userType === "chairman"){
-            return $next($request);
+        if (Auth::user()->userType != "treasurer") {
+            return redirect('/home');
         }
-        return redirect('/home');
+        return $next($request);
     }
 }

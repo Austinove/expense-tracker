@@ -41,3 +41,5 @@ Route::get("/expenses/pending", "ExpensesController@pending")->name("pending")->
 Route::post("/expenses/fetch/pending", "ExpensesController@fetchPending")->name("fetchPending")->middleware("chairman");
 Route::get("/expenses/recommended", "ExpensesController@recommended")->name("recommended")->middleware("treasurer");
 Route::post("/expenses/fetchReco", "ExpensesController@fertchReco")->name("fetchRecommended")->middleware("treasurer");
+
+Route::post("/pdf/data", "ExpensesController@retrievePdf")->name("pdf");

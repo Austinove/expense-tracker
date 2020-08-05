@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ExpensesController extends Controller
 {
@@ -208,6 +209,92 @@ class ExpensesController extends Controller
                 "status" => $inputs['action']
             ]);
             return response()->json(["msg" => "Operation Successfull"]);
+        } catch (QueryException $th) {
+            throw $th;
+        }
+    }
+
+    public function retrievePdf(Request $request){
+        $inputs = $request->all();
+        try {
+            $yearTotal = Expenses::where("created_at", "LIKE", $inputs['year'] . "-%")
+                ->where("status", "=", "approved")->sum('budget');
+                $collection = collect();
+            for ($i=1; $i <= 12; $i++) {
+                if ($i<10) {
+                    $yearMonth = $inputs['year'].'-0'.$i;
+                    $monthTotal = Expenses::where("created_at", "LIKE", $yearMonth . "%")
+                    ->where("status", "=", "approved")->sum('budget');
+                    $expenses = DB::table("expenses")
+                    ->where("expenses.created_at", "LIKE", "{$yearMonth}%")
+                    ->where("expenses.status", "=", "approved")
+                    ->join("users", "expenses.user_id", "=", "users.id")
+                    ->select(
+                        "expenses.id",
+                        "expenses.desc",
+                        "expenses.created_at",
+                        "expenses.budget",
+                        "expenses.status",
+                        "expenses.user_id",
+                        "users.name",
+                        "users.userType"
+                    )->orderBy("created_at", "desc")->get();
+                    if (!$expenses->isEmpty()) {
+                        $collection->push((object)[
+                            "month" => "0".$i,
+                            "monthTotal"=>$monthTotal,
+                            "expenses" => $expenses
+                        ]);
+                    }
+                }else{
+                    $yearMonth = $inputs['year'] . '-' . $i;
+                    $monthTotal = Expenses::where("created_at", "LIKE", $yearMonth ."%")
+                    ->where("status", "=", "approved")->sum('budget');
+                    $expenses = DB::table("expenses")
+                    ->where("expenses.created_at", "LIKE", "{$yearMonth}%")
+                    ->where("expenses.status", "=", "approved")
+                    ->join("users", "expenses.user_id", "=", "users.id")
+                    ->select(
+                        "expenses.id",
+                        "expenses.desc",
+                        "expenses.created_at",
+                        "expenses.budget",
+                        "expenses.status",
+                        "expenses.user_id",
+                        "users.name",
+                        "users.userType"
+                    )->orderBy("created_at", "desc")->get();
+                    if(!$expenses->isEmpty()){
+                        $collection->push((object)[
+                            "month"=>$i,
+                            "monthTotal"=>$monthTotal,
+                            "expenses"=>$expenses
+                        ]);
+                    }
+                    
+                }
+            }
+            // return $collection;
+            // foreach ($collection as $value) {
+            //     return $value->month;
+            // }
+                $pdf = PDF::loadView(
+                    "expenses.expensesPdf",
+                    [
+                        "collection" => $collection,
+                        "yearTotal" => $yearTotal,
+                        "year" => $inputs['year']
+                    ]
+                );
+            // return view(
+            //     "expenses.expensesPdf",
+            //     [
+            //         "collection" => $collection, 
+            //         "yearTotal" => $yearTotal, 
+            //         "year" => $inputs['year']
+            //     ]
+            // );
+            return $pdf->download("expenses.pdf");
         } catch (QueryException $th) {
             throw $th;
         }

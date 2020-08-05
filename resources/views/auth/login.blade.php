@@ -27,59 +27,71 @@
 					</span>
 				</div>
 
-                <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
-                    @csrf
-					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                        <span class="label-input100">Email</span>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-						<span class="focus-input100">
-                            @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        </span>
-					</div>
-
-					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
-                        <span class="label-input100">Password</span>
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-						<span class="focus-input100">
-                            @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        </span>
-					</div>
-
-					<div class="flex-sb-m w-full p-b-30">
-						{{-- <div class="contact100-form-checkbox">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="txt1" for="remember">
-                                {{ __('Remember Me') }}
-                            </label>
-                        </div> --}}
+				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+					@if ($status==="newMember")
 						<div>
-                            <a href="{{ route('register') }}" class="txt1">
-                                Don't have account
-                            </a>
-                        </div>
-                        
-						<div>
-                            @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="txt1">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                            @endif
+							<div class="alert alert-danger" style="font-size: 12px;" role="alert">
+								Your Accout is<strong> not active</strong> now, please contact the chairman for activation
+							</div>
+							<a class="btn btn-sm btn-outline-primary" href="{{route('login')}}"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> back to login</a>
 						</div>
-					</div>
+					@endif
+					@if ($status==="inactive")
+						<div>
+							<div class="alert alert-danger" style="font-size: 12px;" role="alert">
+								If<strong> you didn't login</strong> successfully, your account is inactive. please contact the chairman for activation
+							</div>
+							<a class="btn btn-sm btn-outline-primary" href="{{route('login')}}"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> back to login</a>
+						</div>
+					@endif
+					@if ($status === "login")
+							@csrf
+						<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+							<span class="label-input100">Email</span>
+							<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+							<span class="focus-input100">
+								@error('email')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							</span>
+						</div>
 
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">
-							Login
-						</button>
-					</div>
+						<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+							<span class="label-input100">Password</span>
+							<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+							<span class="focus-input100">
+								@error('password')
+										<span class="invalid-feedback" role="alert">
+											<strong>{{ $message }}</strong>
+										</span>
+									@enderror
+							</span>
+						</div>
+
+						<div class="flex-sb-m w-full p-b-30">
+							<div>
+								<a href="{{ route('register') }}" class="txt1">
+									Don't have account
+								</a>
+							</div>
+							
+							<div>
+								@if (Route::has('password.request'))
+									<a href="{{ route('password.request') }}" class="txt1">
+										{{ __('Forgot Your Password?') }}
+									</a>
+								@endif
+							</div>
+						</div>
+
+						<div class="container-login100-form-btn">
+							<button class="login100-form-btn" type="submit">
+								Login
+							</button>
+						</div>
+					@endif
 				</form>
 			</div>
 		</div>

@@ -77,6 +77,18 @@
     <script type="text/javascript">
         // When the document is ready
         $(document).ready(() => {
+            //setting up month inputs
+            const setMonth = () => {
+                var d = new Date();
+                var currentMonth;
+                (d.getMonth() + 1) >= 10 ? 
+                currentMonth = (d.getMonth() + 1) :
+                currentMonth = "0" + (d.getMonth() + 1);
+                $("#month").val(d.getFullYear() + "-" + currentMonth);
+                console.log("month set");
+            }
+            setMonth();
+
             //Empty inputs
             const emptyInputs = () => {
                 $("#desc").val("");
@@ -113,17 +125,6 @@
                 emptyInputs();
                 $("#request-btn").attr("btn-action", "save").html('<i class="mdi mdi-check"></i> Request');
             })
-
-            //setting up month inputs
-            const setMonth = () => {
-                var d = new Date();
-                var currentMonth;
-                (d.getMonth() + 1) >= 10 ? 
-                currentMonth = (d.getMonth() + 1) :
-                currentMonth = "0" + (d.getMonth() + 1);
-                $("#month").val(d.getFullYear() + "-" + currentMonth);
-            }
-            setMonth();
 
             //User activation and Deactivation actions
             $(document).on("click", ".action", function() {
@@ -207,15 +208,21 @@
         });
         
         const fetchExpenses = () => {
-            var month = $("#month").val().split("-")[1];
-            var monthData = {"month": ("-" + month + "-")}
-            $.when(postActions("expenses/fetch", monthData).done(response => {
+            var monthData = {"date": ($("#month").val())}
+            $.when(postActions("/expenses/fetch", monthData).done(response => {
                 renderExpenses(response);
             }).fail(error => {
                 console.log(error);
             }))
         }
         fetchExpenses();
+        $(".fetchExp").change(function() {
+            $.when(postActions("/expenses/fetch", {"date": ($(this).val())}).done(response => {
+                renderExpenses(response);
+            }).fail(error => {
+                console.log(error);
+            }))
+        });
         
         const renderExpenses = expensesData => {
             $(".expenses-tbody").html("");
@@ -286,7 +293,7 @@
                 "action": "recommend"
                 }
             $.when(postActions("/expenses/actions", recomExp).done(response => {
-                fetchExpenses();
+                fetchPendingExp();
             }).fail(error => {
                 console.log(error);
             }))
@@ -298,7 +305,7 @@
                 "action": "declined"
                 }
             $.when(postActions("/expenses/actions", declineExp).done(response => {
-                fetchExpenses();
+                fetchPendingExp();
             }).fail(error => {
                 console.log(error);
             }))
@@ -310,15 +317,14 @@
                 "action": "approved"
                 }
             $.when(postActions("/expenses/actions", acceptExp).done(response => {
-                fetchExpenses();
+                fetchRecoExp();
             }).fail(error => {
                 console.log(error);
             }))
         });
         
         const fetchPendingExp = () => {
-            var month = $("#month").val().split("-")[1];
-            var monthData = {"month": ("-" + month + "-")}
+            var monthData = {"date": ($("#month").val())}
             $.when(postActions("fetch/pending", monthData).done(response => {
                 renderPendingExp(response);
             }).fail(error => {
@@ -352,10 +358,16 @@
                         `)
             });
         }
+        $(".pendingExp").change(function() {
+            $.when(postActions("fetch/pending", {"date": ($(this).val())}).done(response => {
+                renderPendingExp(response);
+            }).fail(error => {
+                console.log(error);
+            }))
+        });
 
         const fetchRecoExp = () => {
-            var month = $("#month").val().split("-")[1];
-            var monthData = {"month": ("-" + month + "-")}
+            var monthData = {"date": ($("#month").val())}
             $.when(postActions("fetchReco", monthData).done(response => {
                 renderRecoExp(response);
             }).fail(error => {
@@ -388,6 +400,54 @@
                         `)
             });
         }
+        $(".recoExp").change(function() {
+            $.when(postActions("fetchReco", {"date": ($(this).val())}).done(response => {
+                renderRecoExp(response);
+            }).fail(error => {
+                console.log(error);
+            }))
+        });
+
+        const fetchAllExpenses = () => {
+            var monthData = {"date": ($("#month").val())}
+            $.when(postActions("/fetch/expenses", monthData).done(response => {
+                renderAllExpenses(response.expenses);
+                $(".year-total").html(`${response.totalYear} UGX`);
+                $(".month-total").html(`${response.totalMonth} UGX`);
+            }).fail(error => {
+                console.log(error);
+            }))
+        }
+        fetchAllExpenses();
+        const renderAllExpenses = expensesData => {
+            $(".all-tbody").html("");
+            expensesData.forEach(expense => {
+                return $(".all-tbody").append(`
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="">
+                                            <h4 class="m-b-0 font-14">${expense.desc}</h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${expense.name}</span></td>
+                                <td><span class="font-14">${expense.created_at}</span></td>
+                                <td><span class="label label-rounded label-success">${expense.status}</span></td>
+                            </tr>
+                        `)
+            });
+        }
+        $(".allExp").change(function() {
+            $.when(postActions("/fetch/expenses", {"date": ($(this).val())}).done(response => {
+                renderAllExpenses(response.expenses);
+                $(".year-total").html(`${response.totalYear}`);
+                $(".month-total").html(`${response.totalMonth}`);
+            }).fail(error => {
+                console.log(error);
+            }))
+        })
     });
     </script>
     <!--Wave Effects -->

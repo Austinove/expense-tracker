@@ -27,6 +27,38 @@ class ExpensesController extends Controller
         return view("expenses.index");
     }
 
+    public function fetchAll(Request $request){
+        $inputs = $request->all();
+        try {
+            $monthTotal = Expenses::where("created_at", "LIKE", $inputs['date']."-%")
+                    ->where("status", "=", "approved")->sum('budget');
+            $yearTotal = Expenses::where("created_at", "LIKE", explode("-", $inputs['date'])[0] . "-%")
+                ->where("status", "=", "approved")->sum('budget');
+            $expenses = DB::table("expenses")
+            ->where("expenses.created_at", "LIKE", "{$inputs['date']}%")
+            ->join("users", "expenses.user_id", "=", "users.id")
+            ->where("expenses.status", "=", "approved")
+            ->select(
+                "expenses.id",
+                "expenses.desc",
+                "expenses.created_at",
+                "expenses.budget",
+                "expenses.status",
+                "expenses.user_id",
+                "users.name",
+                "users.userType"
+            )
+                ->orderBy("created_at", "desc")->get();
+            return response()->json([
+                "expenses" => $expenses,
+                "totalYear" => $yearTotal,
+                "totalMonth" => $monthTotal
+                ]);
+        } catch (QueryException $th) {
+            throw $th;
+        }
+    }
+
     public function pending()
     {
         return view("expenses.pending");
@@ -37,7 +69,7 @@ class ExpensesController extends Controller
         $inputs = $request->all();
         try {
             $expenses = DB::table("expenses")
-            ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
+            ->where("expenses.created_at", "LIKE", "{$inputs['date']}-%")
             ->where("expenses.status", "=", "pending")
                 ->join("users", "expenses.user_id", "=", "users.id")
                 ->select(
@@ -67,7 +99,7 @@ class ExpensesController extends Controller
         $inputs = $request->all();
         try {
             $expenses = DB::table("expenses")
-            ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
+            ->where("expenses.created_at", "LIKE", "{$inputs['date']}-%")
             ->where("expenses.status", "=", "recommend")
             ->join("users", "expenses.user_id", "=", "users.id")
             ->select(
@@ -87,19 +119,12 @@ class ExpensesController extends Controller
         }
     }
 
-    public function fetchAll($month)
-    {
-        Expenses::where("created_at", "LIKE", "%{$month}%")
-            ->orderBy("created_at, desc")
-            ->get();
-    }
-
     public function fetch(Request $request)
     {
         $inputs = $request->all();
         try {
             $expenses = DB::table("expenses")
-                ->where("expenses.created_at", "LIKE", "%{$inputs['month']}%")
+                ->where("expenses.created_at", "LIKE", "{$inputs['date']}-%")
                 ->where("user_id", "=", Auth::user()->id)
                 ->join("users", "expenses.user_id", "=", "users.id")
                 ->select(

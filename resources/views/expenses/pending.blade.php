@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="ml-auto">
                                     <div class="dl">
-                                        <input type="month" name="month" id="month" />
+                                        <input type="month" class="pendingExp"name="month" id="month" />
                                     </div>
                                 </div>
                             </div>

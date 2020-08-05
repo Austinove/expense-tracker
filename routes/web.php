@@ -30,6 +30,7 @@ Route::get("/members", "UserController@members")->name("members");
 Route::post("/status/actions", "UserController@status")->name("status");
 
 Route::get("/all/expenses", "ExpensesController@allExpenses")->name("allExpenses");
+Route::post("/fetch/expenses", "ExpensesController@fetchAll")->name("fetchAll");
 Route::get("/dashboard", "ExpensesController@index")->name("welcome");
 Route::post("/expense", "ExpensesController@create")->name("createExpense");
 Route::post("/expenses/fetch", "ExpensesController@fetch")->name("fetchExpenses");

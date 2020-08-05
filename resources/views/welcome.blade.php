@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="ml-auto">
                                     <div class="dl">
-                                        <input type="month" name="month" id="month" />
+                                        <input type="month" class="fetchExp" name="month" id="month" />
                                     </div>
                                 </div>
                             </div>

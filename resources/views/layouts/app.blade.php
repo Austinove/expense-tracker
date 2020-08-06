@@ -35,7 +35,7 @@
                 <div class="navbar-header" data-logobg="skin5">
                     <a class="navbar-brand" href="index.html">
                         <b class="logo-icon">
-                            <img height="60px" src="{{asset('images/logo.JPG')}}" alt="homepage" />
+                            <img height="60px" src="{{asset('images/logo.JPG')}}" alt="logo" />
                         </b>
                         <span class="font-14">Friends With a Purpose</span>
                     </a>
@@ -103,6 +103,13 @@
                     dataType: "json"
                 });
             };
+
+            //check for connectivity
+            setInterval(() => {
+                $.when(getRequest("check").then(response => {}).fail(error => {
+                    $(".connection-check").html("Your may be disconnected from internet");
+                }))
+            }, 60000);
 
             //post function request
             const postActions = (actionUrl, sendData) => {
@@ -209,7 +216,7 @@
         
         const fetchExpenses = () => {
             var monthData = {"date": ($("#month").val())}
-            $.when(postActions("/expenses/fetch", monthData).done(response => {
+            $.when(postActions("expenses/fetch", monthData).done(response => {
                 renderExpenses(response);
             }).fail(error => {
                 console.log(error);
@@ -217,7 +224,7 @@
         }
         fetchExpenses();
         $(".fetchExp").change(function() {
-            $.when(postActions("/expenses/fetch", {"date": ($(this).val())}).done(response => {
+            $.when(postActions("expenses/fetch", {"date": ($(this).val())}).done(response => {
                 renderExpenses(response);
             }).fail(error => {
                 console.log(error);
@@ -279,7 +286,7 @@
         $(document).on("click", ".delete-icon", function(e) {
             e.preventDefault();
             var deleteExp = {"id": $(this).attr("id-data")}
-            $.when(postActions("/expenses/delete", deleteExp).done(response => {
+            $.when(postActions("expenses/delete", deleteExp).done(response => {
                 fetchExpenses();
             }).fail(error => {
                 console.log(error);
@@ -292,7 +299,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "recommend"
                 }
-            $.when(postActions("/expenses/actions", recomExp).done(response => {
+            $.when(postActions("expenses/actions", recomExp).done(response => {
                 fetchPendingExp();
             }).fail(error => {
                 console.log(error);
@@ -304,7 +311,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "declined"
                 }
-            $.when(postActions("/expenses/actions", declineExp).done(response => {
+            $.when(postActions("expenses/actions", declineExp).done(response => {
                 fetchPendingExp();
             }).fail(error => {
                 console.log(error);
@@ -316,7 +323,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "approved"
                 }
-            $.when(postActions("/expenses/actions", acceptExp).done(response => {
+            $.when(postActions("expenses/actions", acceptExp).done(response => {
                 fetchRecoExp();
             }).fail(error => {
                 console.log(error);
@@ -440,7 +447,7 @@
             });
         }
         $(".allExp").change(function() {
-            $.when(postActions("/fetch/expenses", {"date": ($(this).val())}).done(response => {
+            $.when(postActions("fetch/expenses", {"date": ($(this).val())}).done(response => {
                 renderAllExpenses(response.expenses);
                 $(".year-total").html(`${response.totalYear}`);
                 $(".month-total").html(`${response.totalMonth}`);

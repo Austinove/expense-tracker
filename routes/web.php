@@ -14,12 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('auth.login')->with("status", "login");
 });
 
 Route::get('/dashboard', function () {
     return view('welcome');
 })->name('welcome');
+
+Route::get("/check", function(){
+    return response()->json(["msg" => "connected"]);
+})->name("checking");
 
 Auth::routes();
 
@@ -29,7 +33,7 @@ Route::post("/edit/profile", "UserController@edit")->name("editUser");
 Route::get("/members", "UserController@members")->name("members");
 Route::post("/status/actions", "UserController@status")->name("status");
 
-Route::get("/all/expenses", "ExpensesController@allExpenses")->name("allExpenses");
+Route::get("/allExpenses", "ExpensesController@allExpenses")->name("allExpenses");
 Route::post("/fetch/expenses", "ExpensesController@fetchAll")->name("fetchAll");
 Route::get("/dashboard", "ExpensesController@index")->name("welcome");
 Route::post("/expense", "ExpensesController@create")->name("createExpense");

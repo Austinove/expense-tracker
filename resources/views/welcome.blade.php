@@ -22,6 +22,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
+                <span class="connection-check text-danger ml-4" style="font-size: 12px;"></span>
                 <!-- column -->
                 <div class="col-12">
                     <div class="card">

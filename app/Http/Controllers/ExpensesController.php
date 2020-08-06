@@ -203,9 +203,8 @@ class ExpensesController extends Controller
     public function action(Request $request)
     {
         $inputs = $request->all();
-        $user = User::findOrFail(Auth::user()->id);
         try {
-            $user->expense()->where("id", "=", $inputs['id'])->update([
+            Expenses::where("id", "=", $inputs['id'])->update([
                 "status" => $inputs['action']
             ]);
             return response()->json(["msg" => "Operation Successfull"]);
@@ -274,10 +273,6 @@ class ExpensesController extends Controller
                     
                 }
             }
-            // return $collection;
-            // foreach ($collection as $value) {
-            //     return $value->month;
-            // }
                 $pdf = PDF::loadView(
                     "expenses.expensesPdf",
                     [

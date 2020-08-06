@@ -448,6 +448,12 @@
                 console.log(error);
             }))
         })
+        setTimeout(() => {
+            fetchPendingExp();
+            fetchExpenses();
+            fetchRecoExp();
+            fetchAllExpenses();
+        }, 3000);
     });
     </script>
     <!--Wave Effects -->

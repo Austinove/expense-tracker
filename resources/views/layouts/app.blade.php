@@ -35,7 +35,7 @@
                 <div class="navbar-header" data-logobg="skin5">
                     <a class="navbar-brand" href="index.html">
                         <b class="logo-icon">
-                            <img height="60px" src="{{asset('images/logo.JPG')}}" alt="logo" />
+                            <img height="60px" src="{{asset('images/logo.jpg')}}" alt="logo" />
                         </b>
                         <span class="font-14">Friends With a Purpose</span>
                     </a>
@@ -103,13 +103,13 @@
                     dataType: "json"
                 });
             };
-
-            //check for connectivity
-            setInterval(() => {
-                $.when(getRequest("check").then(response => {}).fail(error => {
-                    $(".connection-check").html("Your may be disconnected from internet");
-                }))
-            }, 60000);
+            
+            // //check for connectivity
+            // setInterval(() => {
+            //     $.when(getRequest("check").then(response => {}).fail(error => {
+            //         $(".connection-check").html("Your may be disconnected from internet");
+            //     }))
+            // }, 6000);
 
             //post function request
             const postActions = (actionUrl, sendData) => {
@@ -299,7 +299,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "recommend"
                 }
-            $.when(postActions("expenses/actions", recomExp).done(response => {
+            $.when(postActions("actions", recomExp).done(response => {
                 fetchPendingExp();
             }).fail(error => {
                 console.log(error);
@@ -311,7 +311,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "declined"
                 }
-            $.when(postActions("expenses/actions", declineExp).done(response => {
+            $.when(postActions("actions", declineExp).done(response => {
                 fetchPendingExp();
             }).fail(error => {
                 console.log(error);
@@ -323,7 +323,7 @@
                 "id": $(this).attr("id-data"),
                 "action": "approved"
                 }
-            $.when(postActions("expenses/actions", acceptExp).done(response => {
+            $.when(postActions("actions", acceptExp).done(response => {
                 fetchRecoExp();
             }).fail(error => {
                 console.log(error);
@@ -417,7 +417,7 @@
 
         const fetchAllExpenses = () => {
             var monthData = {"date": ($("#month").val())}
-            $.when(postActions("/fetch/expenses", monthData).done(response => {
+            $.when(postActions("fetch/expenses", monthData).done(response => {
                 renderAllExpenses(response.expenses);
                 $(".year-total").html(`${response.totalYear} UGX`);
                 $(".month-total").html(`${response.totalMonth} UGX`);
@@ -455,12 +455,12 @@
                 console.log(error);
             }))
         })
-        setTimeout(() => {
-            fetchPendingExp();
-            fetchExpenses();
-            fetchRecoExp();
-            fetchAllExpenses();
-        }, 3000);
+        // setTimeout(() => {
+        //     fetchPendingExp();
+        //     fetchExpenses();
+        //     fetchRecoExp();
+        //     fetchAllExpenses();
+        // }, 6000);
     });
     </script>
     <!--Wave Effects -->

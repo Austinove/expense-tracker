@@ -21,9 +21,7 @@ Route::get('/dashboard', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get("/check", function(){
-    return response()->json(["msg" => "connected"]);
-})->name("checking");
+Route::get("/check", "HomeController@check")->name("checking");
 
 Auth::routes();
 
@@ -39,8 +37,8 @@ Route::get("/dashboard", "ExpensesController@index")->name("welcome");
 Route::post("/expense", "ExpensesController@create")->name("createExpense");
 Route::post("/expenses/fetch", "ExpensesController@fetch")->name("fetchExpenses");
 Route::post("/expenses/edit/{id}", "ExpensesController@edit")->name("editExpenses");
-Route::post("expenses/delete", "ExpensesController@destroy")->name("deleteExpense");
-Route::post("expenses/actions", "ExpensesController@action")->name("expenseAction");
+Route::post("/expenses/delete", "ExpensesController@destroy")->name("deleteExpense");
+Route::post("/expenses/actions", "ExpensesController@action")->name("expenseAction");
 Route::get("/expenses/pending", "ExpensesController@pending")->name("pending")->middleware("chairman");
 Route::post("/expenses/fetch/pending", "ExpensesController@fetchPending")->name("fetchPending")->middleware("chairman");
 Route::get("/expenses/recommended", "ExpensesController@recommended")->name("recommended")->middleware("treasurer");

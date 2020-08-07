@@ -281,15 +281,15 @@ class ExpensesController extends Controller
                         "year" => $inputs['year']
                     ]
                 );
-            // return view(
-            //     "expenses.expensesPdf",
-            //     [
-            //         "collection" => $collection, 
-            //         "yearTotal" => $yearTotal, 
-            //         "year" => $inputs['year']
-            //     ]
-            // );
-            return $pdf->download("expenses.pdf");
+            return view(
+                "expenses.expensesPdf",
+                [
+                    "collection" => $collection, 
+                    "yearTotal" => $yearTotal, 
+                    "year" => $inputs['year']
+                ]
+            );
+            // return $pdf->download("expenses.pdf");
         } catch (QueryException $th) {
             throw $th;
         }

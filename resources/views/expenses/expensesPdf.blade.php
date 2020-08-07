@@ -38,7 +38,7 @@
         @if (count($collection)>0)
         <div class="year">
             <span style="float: right;">{{$year}} Total Expense: 
-                <strong>{{$yearTotal}} UGX</strong>
+                <strong>{{number_format($yearTotal, 2)}} UGX</strong>
             </span>
         </div>
             @foreach ($collection as $expenses)
@@ -86,7 +86,7 @@
                                         @default
                                             @break
                                     @endswitch
-                                    , {{$expenses->monthTotal}} UGX
+                                    : {{number_format($expenses->monthTotal, 2)}} UGX
                                 @endif
                             </strong>
                         </span>

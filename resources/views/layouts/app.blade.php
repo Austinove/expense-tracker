@@ -230,7 +230,14 @@
                 console.log(error);
             }))
         });
-        
+
+        //setting up commas in budget
+        const numberWithCommas = (number)  => {
+            var parts = number.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
+        }
+
         const renderExpenses = expensesData => {
             $(".expenses-tbody").html("");
             expensesData.forEach(expense => {
@@ -261,7 +268,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${numberWithCommas(expense.budget)}</span></td>
                                 <td><span class="font-14">${expense.name}</span></td>
                                 <td><span class="font-14">${expense.created_at}</span></td>
                                 <td><span class="${spanClass}">${expense.status}</span></td>
@@ -275,6 +282,7 @@
                         `)
             });
         }
+
         $(document).on("click", ".edit-icon", function(e) {
             e.preventDefault();
             $("#budget").val($(this).attr("budget-data"));
@@ -351,7 +359,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${numberWithCommas(expense.budget)}</span></td>
                                 <td><span class="font-14">${expense.name}</span></td>
                                 <td><span class="font-14">${expense.created_at}</span></td>
                                 <td><span class="label label-rounded label-primary">${expense.status}</span></td>
@@ -394,7 +402,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${numberWithCommas(expense.budget)}</span></td>
                                 <td><span class="font-14">${expense.name}</span></td>
                                 <td><span class="font-14">${expense.created_at}</span></td>
                                 <td><span class="label label-rounded label-warning">${expense.status}</span></td>
@@ -438,7 +446,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span class="font-14">${expense.budget}</span></td>
+                                <td><span class="font-14">${numberWithCommas(expense.budget)}</span></td>
                                 <td><span class="font-14">${expense.name}</span></td>
                                 <td><span class="font-14">${expense.created_at}</span></td>
                                 <td><span class="label label-rounded label-success">${expense.status}</span></td>
@@ -455,12 +463,12 @@
                 console.log(error);
             }))
         })
-        // setTimeout(() => {
-        //     fetchPendingExp();
-        //     fetchExpenses();
-        //     fetchRecoExp();
-        //     fetchAllExpenses();
-        // }, 6000);
+        setTimeout(() => {
+            fetchPendingExp();
+            fetchExpenses();
+            fetchRecoExp();
+            fetchAllExpenses();
+        }, 6000);
     });
     </script>
     <!--Wave Effects -->

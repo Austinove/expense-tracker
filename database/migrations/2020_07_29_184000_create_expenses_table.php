@@ -19,6 +19,7 @@ class CreateExpensesTable extends Migration
             $table->string('desc');
             $table->string('budget');
             $table->string('status');
+            $table->string('reason');
             $table->timestamps();
         });
     }

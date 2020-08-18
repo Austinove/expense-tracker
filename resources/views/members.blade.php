@@ -10,7 +10,15 @@
                             <center class="m-t-30">
                                 <img src={{asset('profiles/'.$user->image)}} class="rounded-circle" width="150" />
                                 <h4 class="card-title m-t-10">{{$user->name}}</h4>
-                                <h6 class="card-subtitle">{{$user->userType}}</h6>
+                                <h6 class="card-subtitle">
+                                    @if($user->userType=="chairman") 
+                                    {{'The Chairperson'}}
+                                    @elseif ($user->userType=="treasurer") 
+                                        {{'Secretary for Finance and Projects'}}
+                                    @else
+                                        {{$user->userType}}
+                                    @endif
+                                </h6>
                                 <span>Status:  
                                     <span class="{{$user->status==='Activated'? 'label label-success label-rounded':'label label-danger label-rounded'}}">{{$user->status}}</span>
                                 </span>

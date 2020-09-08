@@ -133,14 +133,30 @@
                 $("#request-btn").attr("btn-action", "save").html('<i class="mdi mdi-check"></i> Request');
             })
 
-            //User activation and Deactivation actions
+            //User activation/Deactivation/reset Password actions
             $(document).on("click", ".action", function() {
-                var initialUrl = "status/actions"
+                var initialUrl = "status/actions";
                 var action;
-                $(this).attr('btn-action') === "activate" ? (action = { "id": $(this).attr('data-id'), "action": "Activated" }) : (action ={ "id": $(this).attr('data-id'), "action": "Deactivated" });
+                switch ($(this).attr('btn-action')) {
+                    case "activate":
+                        action = { "id": $(this).attr('data-id'), "action": "Activated" }
+                        break;
+                    case "deactivate":
+                        action ={ "id": $(this).attr('data-id'), "action": "Deactivated" }
+                        break;
+                    case "reset":
+                        initialUrl = "reset";
+                        action ={ "id": $(this).attr('data-id') }
+                        break;
+                
+                    default:
+                        break;
+                }
+                
                 $.when(postActions(initialUrl, action).done(response => {
                     location.reload();
                 }).fail(error => {
+                    $(".alert-danger").removeClass("d-none");
                     console.log(error)
                 }))
             })

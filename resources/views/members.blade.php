@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <div class="page-wrapper">
+    <div class="alert alert-danger d-none alert-dismissible fade show" role="alert">
+        <span>An error occuired, try again later</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="row ml-1">
         @if ($users->count()>0)
             @foreach ($users as $user)
@@ -33,19 +39,18 @@
                             <h6>{{$user->name}}</h6>
                             <small class="text-muted p-t-30 db">Actions to User</small>
                             <br class="mt-1 mb-2"/>
-                            @if (Auth()->user()->userType==="chairman")
-                                @if ($user->status==='Deactivated')
-                                    <div>
+                            <div>
+                                @if (Auth()->user()->userType==="chairman")
+                                    @if ($user->status==='Deactivated')
                                         <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate" disabled><i class="mdi mdi-close-circle"></i>Deactivate</button>
                                         <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate"><i class="mdi mdi-check"></i>Activate</button>
-                                    </div>
-                                @else
-                                    <div>
+                                    @else
                                         <button class="btn btn-sm btn-outline-danger action" data-id={{$user->id}} btn-action="deactivate"><i class="mdi mdi-close-circle"></i>Deactivate</button>
                                         <button class="btn btn-sm btn-outline-success action" data-id={{$user->id}} btn-action="activate" disabled><i class="mdi mdi-check"></i>Activate</button>
-                                    </div>
+                                    @endif
                                 @endif
-                            @endif
+                                <button class="btn btn-sm btn-outline-info action float-right" data-id={{$user->id}} btn-action="reset"><i class="fas fa-cog"></i> reset</button>
+                            </div>
                         </div>
                     </div>
                 </div>

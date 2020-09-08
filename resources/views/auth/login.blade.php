@@ -77,13 +77,13 @@
 								</a>
 							</div>
 							
-							<div>
+							{{-- <div>
 								@if (Route::has('password.request'))
 									<a href="{{ route('password.request') }}" class="txt1">
 										{{ __('Forgot Your Password?') }}
 									</a>
 								@endif
-							</div>
+							</div> --}}
 						</div>
 
 						<div class="container-login100-form-btn">

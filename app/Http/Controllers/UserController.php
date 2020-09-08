@@ -83,4 +83,16 @@ class UserController extends Controller
                 throw $th;
             }
     }
+
+    public function resetPassword(Request $request){
+        $inputs = $request->all();
+        try {
+            User::where("id", "=", $inputs['id'])->update([
+                "password" => Hash::make("password")
+            ]);
+            return response()->json(["msg" => "Request Was Successfully"]);
+        } catch (QueryException $th) {
+            throw $th;
+        }
+    }
 }

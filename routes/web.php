@@ -27,6 +27,7 @@ Auth::routes();
 
 Route::get("/home", "HomeController@index")->name("home");
 Route::get("/profile", "UserController@index")->name('profile');
+Route::post("/reset", "UserController@resetPassword")->name("reset");
 Route::post("/edit/profile", "UserController@edit")->name("editUser");
 Route::get("/members", "UserController@members")->name("members");
 Route::post("/status/actions", "UserController@status")->name("status");
